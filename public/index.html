@@ -1,0 +1,41 @@
+<html>
+  <head>
+
+  </head>
+  <body>
+    <div id="text">
+      Not able to connect.
+    </div>
+
+      <!-- Change this version to 8.4.1 and it will no longer work... -->
+      <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-app.js"></script>
+
+      <!-- Change this version to 8.4.1 and it will no longer work... -->
+      <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-database.js"></script>
+      
+    <script>
+      // set this to something real
+      var firebaseConfig = {
+        projectId: "example-app",
+        databaseURL: 'https://example-app.firebaseio.com'
+      };
+      
+      firebase.initializeApp(firebaseConfig);
+      localStorage.clear();
+
+      var database = firebase.database();
+      database.useEmulator("localhost", 9000);
+
+      var testValue = true 
+      setInterval(function () {
+        database.ref('test').set(testValue)
+        testValue = !testValue
+      }, 500)
+
+      database.ref('test').on('value', function (snapshot) {
+        console.log('Value changed to:', snapshot.val())
+        document.getElementById("text").innerText = "Test value is " + snapshot.val()
+      })
+    </script>
+  </body>
+</html>
